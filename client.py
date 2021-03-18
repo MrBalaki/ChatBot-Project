@@ -14,19 +14,21 @@ description = "The client is responsible to connect to the server, write and rea
 parser = argparse.ArgumentParser(description=description)
 parser.add_argument('-ip', '--ipaddr', metavar='', type=str, help='IPv4 flag')
 parser.add_argument('-p', '--port', metavar='', type=int, help='Port for the connection the default port is 6000')
-parser.add_argument('-bn', '--botname', metavar='', type=str, help='The name of bot which represents a client.\n'
-                                                                   'Choose between those names (Alice, Bob, '
-                                                                   'Dora and Chuck)')
+parser.add_argument('-bn', '--botname', metavar='', type=str, help='The name of the client.')
+parser.add_argument('-bt', '--bottype', metavar='', type=str, help='The name/type of the bot represeting the client\n'
+                                                                   'Choose between those names (Alice, Bob, Dora, Chuck)')
 args = parser.parse_args()
 
 
 def arg_handlers(arguments) -> tuple:
     bots = ("Alice", "Bob", "Dora", "Chuck")
 
+    username = arguments.botname.title()
+
     if (not arguments.botname) or (arguments.botname.title() not in bots):
-        username = random.choice(bots)
+        bottype = random.choice(bots)
     else:
-        username = arguments.botname.title()
+        bottype = arguments.botname.title()
 
     if arguments.port:
         port = arguments.port
@@ -38,12 +40,12 @@ def arg_handlers(arguments) -> tuple:
     else:
         ipaddress = socket.gethostbyname(socket.gethostname())
 
-    return username, ipaddress, port
+    return username, bottype, ipaddress, port
 
 
 # GLOBALS:
 # Connection
-USERNAME, IPADDR, PORT = arg_handlers(args)
+USERNAME, BOT_TYPE, IPADDR, PORT = arg_handlers(args)
 ADDRESS = (IPADDR, PORT)
 
 # Message:
@@ -99,7 +101,8 @@ def write_msg(connection: socket):
     while True:
         if len(RECEIVED_MSGS_FROM_SERVER) == 1:
             # print(len(RECEIVED_MSGS_FROM_SERVER))
-            message = pick_bot(USERNAME, RECEIVED_MSGS_FROM_SERVER[0])
+            message = pick_bot(BOT_TYPE, RECEIVED_MSGS_FROM_SERVER[0])
+            message.sender = USERNAME
             serialized_msg = pickle.dumps(message)
             connection.send(serialized_msg)
             break

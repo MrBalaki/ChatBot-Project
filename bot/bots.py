@@ -53,7 +53,8 @@ def alice(message: Message) -> Message:
     }
 
     content = content_choice(is_interested, contents)
-    return Message(sender=bot_name, content=content)
+    #return Message(sender=bot_name, content=content)
+    return Message(content=content)
 
 
 def bob(message: Message) -> Message:
@@ -77,7 +78,8 @@ def bob(message: Message) -> Message:
         ]
     }
     content = content_choice(is_interested, contents)
-    return Message(sender=bot_name, content=content)
+    #return Message(sender=bot_name, content=content)
+    return Message(content=content)
 
 
 def dora(message: Message) -> Message:
@@ -106,7 +108,8 @@ def dora(message: Message) -> Message:
     }
 
     content = content_choice(is_interested, contents)
-    return Message(sender=bot_name, content=content)
+    #return Message(sender=bot_name, content=content)
+    return Message(content=content)
 
 
 def chuck(message: Message) -> Message:
@@ -132,4 +135,5 @@ def chuck(message: Message) -> Message:
     }
 
     content = content_choice(is_interested, contents)
-    return Message(sender=bot_name, content=content)
+    #return Message(sender=bot_name, content=content)
+    return Message(content=content)
